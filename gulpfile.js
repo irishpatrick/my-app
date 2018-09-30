@@ -1,30 +1,10 @@
 var gulp = require("gulp");
-var browserify = require("browserify");
-var source = require("vinyl-source-stream");
-var watchify = require("watchify");
-var tsify = require("tsify");
-var gutil = require("gulp-util");
+var typescript = require("gulp-typescript")
+var project = typescript.createProject("tsconfig.json");
 
-var watchedBrowserify = watchify(browserify({
-    basedir: ".",
-    debug: true,
-    entries:
-    [
-        'src/app.ts',
-        "src/test.ts"
-    ],
-    cache: {},
-    packageCache: {}
-}).plugin(tsify));
-
-function bundle()
+gulp.task("default", ()=>
 {
-    return watchedBrowserify
-    .bundle()
-    .pipe(source("app.js"))
-    .pipe(gulp.dest("dist/js"));
-}
-
-gulp.task("default", bundle);
-watchedBrowserify.on("update", bundle);
-watchedBrowserify.on("log", gutil.log);
+    return project.src()
+    .pipe(project())
+    .js.pipe(gulp.dest("./dist/js"));
+});
