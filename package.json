@@ -1,0 +1,25 @@
+{
+  "name": "my-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "make": "tsc --watch --outFile ./dist/js/app.js"
+  },
+  "author": "Patrick Roche",
+  "license": "ISC",
+  "devDependencies": {
+    "browserify": "^16.2.3",
+    "electron": "^3.0.2",
+    "gulp": "^3.9.1",
+    "gulp-typescript": "^5.0.0-alpha.3",
+    "tsify": "^4.0.0",
+    "vinyl-source-stream": "^2.0.0"
+  },
+  "dependencies": {
+    "three": "^0.97.0",
+    "three-addons": "^1.2.0"
+  }
+}
