@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var THREE = require("three");
 var Addons = require("three-addons");
 var GLTFLoader = require("three-gltf-loader");
-var Test_1 = require("./Test");
+const Test_1 = require("./Test");
 //import {FirstPersonCamera} from "./FirstPersonCamera";
 var test = new Test_1.Test();
 var scene;
@@ -21,11 +21,11 @@ function init() {
 }
 function create() {
     test.test();
-    loader.load("assets/tree.gltf", function (object) {
+    loader.load("assets/tree.gltf", (object) => {
         scene.add(object.scene);
-    }, function (xhr) {
+    }, (xhr) => {
         console.log((xhr.loaded / xhr.total * 100) + "% loaded");
-    }, function (error) {
+    }, (error) => {
         console.log("error");
     });
     var hemisphere = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.25);
