@@ -5,18 +5,19 @@ var THREE = require("three");
 var Addons = require("three-addons");
 var GLTFLoader = require("three-gltf-loader");
 const Test_1 = require("./Test");
-//import {FirstPersonCamera} from "./FirstPersonCamera";
+const Util_1 = require("./Util");
 var test = new Test_1.Test();
 var scene;
 var camera;
 var renderer;
 var loader;
+var tree = null;
 function init() {
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
     renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
     renderer.setClearColor(0xffdd77, 1);
-    renderer.gammaFactor = 1;
+    renderer.gammaFactor = 2.2;
     renderer.gammaOutput = true;
     loader = new GLTFLoader();
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -28,7 +29,9 @@ function init() {
     });
 }
 function create() {
+    camera.position.set(0, 3, 0);
     loader.load("assets/tree.gltf", (object) => {
+        tree = object.scene;
         scene.add(object.scene);
     }, (xhr) => {
         console.log((xhr.loaded / xhr.total * 100) + "% loaded");
@@ -44,14 +47,17 @@ function create() {
     }, (error) => {
         console.log(error);
     });
-    var ambient = new THREE.AmbientLight(0xffffff, 0.1);
+    var ambient = new THREE.AmbientLight(0xbbffff, 0.2);
     scene.add(ambient);
-    var hemisphere = new THREE.DirectionalLight(0xffffff, 0xffffff, 0.75);
-    hemisphere.position.set(10, 10, 10);
-    scene.add(hemisphere);
+    var sun = new THREE.DirectionalLight(0xffffff, 0.75);
+    sun.position.set(10, 10, 0);
+    scene.add(sun);
     camera.position.z = 10;
 }
 function render() {
+    if (tree !== null) {
+        tree.rotation.y += Util_1.Util.rad(0.5);
+    }
     requestAnimationFrame(render);
     renderer.render(scene, camera);
 }
