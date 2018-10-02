@@ -16,6 +16,8 @@ function init() {
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
     renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
     renderer.setClearColor(0xffdd77, 1);
+    renderer.gammaFactor = 1;
+    renderer.gammaOutput = true;
     loader = new GLTFLoader();
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
@@ -42,11 +44,11 @@ function create() {
     }, (error) => {
         console.log(error);
     });
-    var ambient = new THREE.AmbientLight(0xffffff, 1);
+    var ambient = new THREE.AmbientLight(0xffffff, 0.1);
     scene.add(ambient);
-    var hemisphere = new THREE.HemisphereLight(0xffffff, 0xffffff, 1);
+    var hemisphere = new THREE.DirectionalLight(0xffffff, 0xffffff, 0.75);
     hemisphere.position.set(10, 10, 10);
-    //scene.add(hemisphere);
+    scene.add(hemisphere);
     camera.position.z = 10;
 }
 function render() {
