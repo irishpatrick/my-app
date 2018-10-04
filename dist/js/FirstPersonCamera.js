@@ -9,6 +9,7 @@ class FirstPersonCamera {
         this.camera = camera;
         this.yaw.add(this.pitch);
         this.pitch.add(this.camera);
+        this.position = new THREE.Vector3();
     }
     pitchCamera(amount) {
         this.pitch.rotation.x = Util_1.Util.rad(amount);
@@ -17,9 +18,7 @@ class FirstPersonCamera {
         this.yaw.rotation.y = Util_1.Util.rad(amount);
     }
     update() {
-        this.yaw.position.x = this.position.x;
-        this.yaw.position.y = this.position.y;
-        this.yaw.position.z = this.position.z;
+        this.yaw.position.copy(this.position);
     }
 }
 exports.FirstPersonCamera = FirstPersonCamera;

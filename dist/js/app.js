@@ -4,15 +4,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var THREE = require("three");
 var Addons = require("three-addons");
 var GLTFLoader = require("three-gltf-loader");
-const Test_1 = require("./Test");
 const Util_1 = require("./Util");
-var test = new Test_1.Test();
 var scene;
 var camera;
 var renderer;
 var loader;
+var lock;
+var keys;
 var tree = null;
 function init() {
+    keys = [];
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
     renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
@@ -22,11 +23,23 @@ function init() {
     loader = new GLTFLoader();
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
+    // pointerlock
+    renderer.domElement.onclick = () => {
+        renderer.domElement.requestPointerLock();
+        lock = true;
+    };
+    // event listeners
     window.addEventListener("resize", (e) => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
     });
+    window.addEventListener("keydown", (e) => {
+        keys[e.keyCode] = true;
+    }, false);
+    window.addEventListener("keyup", (e) => {
+        delete keys[e.keyCode];
+    }, false);
 }
 function create() {
     camera.position.set(0, 3, 0);
@@ -54,7 +67,16 @@ function create() {
     scene.add(sun);
     camera.position.z = 10;
 }
+function update() {
+    if (keys[27]) {
+        if (lock) {
+            renderer.domElememnt.exitPointerLock();
+            lock = false;
+        }
+    }
+}
 function render() {
+    update();
     if (tree !== null) {
         tree.rotation.y += Util_1.Util.rad(0.5);
     }

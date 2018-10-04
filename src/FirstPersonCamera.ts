@@ -6,7 +6,7 @@ export class FirstPersonCamera
     pitch: any;
     yaw: any;
     camera: any;
-    position: {x: 0, y: 0, z: 0};
+    position: any;
 
     constructor(camera: any)
     {
@@ -16,6 +16,8 @@ export class FirstPersonCamera
 
         this.yaw.add(this.pitch);
         this.pitch.add(this.camera);
+
+        this.position = new THREE.Vector3();
     }
 
     pitchCamera(amount: number)
@@ -30,8 +32,6 @@ export class FirstPersonCamera
 
     update()
     {
-        this.yaw.position.x = this.position.x;
-        this.yaw.position.y = this.position.y;
-        this.yaw.position.z = this.position.z;
+        this.yaw.position.copy(this.position);
     }
 }
