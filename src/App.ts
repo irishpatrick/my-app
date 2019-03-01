@@ -6,6 +6,7 @@ var GLTFLoader = require("three-gltf-loader");
 
 import {Util} from "./Util";
 import {FirstPersonCamera} from "./FirstPersonCamera";
+import {Pointer} from "./Pointer";
 
 var scene: any;
 var camera: any;
@@ -18,15 +19,7 @@ var keys: boolean[];
 
 var tree: any = null;
 
-function pointerLockChange(e: any)
-{
-
-}
-
-function pointerLockError(e: any)
-{
-    
-}
+var pointer: Pointer;
 
 function init()
 {
@@ -42,11 +35,14 @@ function init()
     document.body.appendChild(renderer.domElement);
 
     // pointerlock
-    renderer.domElement.onclick = () =>
+    /*renderer.domElement.onclick = () =>
     {
         renderer.domElement.requestPointerLock();
         lock = true;
-    }
+    }*/
+
+    pointer = new Pointer();
+    pointer.lock(renderer.domElement);
 
     // event listeners
     window.addEventListener("resize", (e) =>
@@ -117,12 +113,15 @@ function update()
 {
     if (keys[27])
     {
-        if (lock)
+        if (pointer.isLocked())
         {
-            renderer.domElememnt.exitPointerLock();
+            //document.exitPointerLock();
+            pointer.unlock();
             lock = false;
         }
     }
+    camera.rotation.y -= pointer.deltaX() / 2000;
+
 }
 
 function render()
